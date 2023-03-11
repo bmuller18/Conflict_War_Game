@@ -1,36 +1,7 @@
 import os
-
-class Province:
-    def __init__(self, name):
-        self.name = name
-        self.army = []
-        self.buildings = []
-
-
-class Edificio:
-    def __init__(self, nombre):
-        self.nombre = nombre
-def mostrar_opciones_edificios():
-    print("Seleccione un edificio para construir:")
-    print("1. Base del Ejército")
-    print("2. Oficinas")
-    print("3. Base Naval")
-
-
-    
-class Army:
-    def __init__(self, name, size):
-        self.name = name
-        self.size = size
-        self.units = []
-
-class Unit:
-    def __init__(self, name, damage, defense):
-        self.name = name
-        self.damage = damage
-        self.defense = defense
-
-
+from Province import Province
+from Edificio import Edificio
+from Army import Army, Unit
 
 provinces = [
     Province("Alphaland"),
@@ -43,92 +14,57 @@ provinces = [
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def menu_principal():
+while True:
+    clear_console()
+    print("Seleccione una provincia:")
+    for i, province in enumerate(provinces):
+        print(f"{i+1}. {province.name}")
+
+    opcion_provincia = input("Provincia seleccionada (0 para salir): ")
+
+    try:
+        opcion_provincia = int(opcion_provincia)
+        if opcion_provincia == 0:
+            break
+        elif opcion_provincia < 1 or opcion_provincia > len(provinces):
+            raise ValueError
+    except ValueError:
+        print("Opción inválida. Por favor, seleccione una provincia válida.")
+        input("Presione enter para continuar...")
+        continue
+
+    provincia_seleccionada = provinces[opcion_provincia-1]
+
     while True:
         clear_console()
-        print("Seleccione una provincia:")
-        for i, province in enumerate(provinces):
-            print(f"{i + 1}. {province.name}")
-        provincia_seleccionada = input("Provincia seleccionada: ")
-        try:
-            provincia_seleccionada = int(provincia_seleccionada)
-            if provincia_seleccionada < 1 or provincia_seleccionada > len(provinces):
-                raise ValueError()
-        except ValueError:
-            print("Provincia inválida.")
-            input("Presione Enter para continuar...")
-            continue
-        provincia_seleccionada = provinces[provincia_seleccionada - 1]
-        
-        while True:
+        print(f"Provincia: {provincia_seleccionada.name}")
+        print("Seleccione una opción:")
+        print("1. Crear edificio")
+        print("2. Crear ejército")
+        print("3. Ver ejércitos")
+        print("4. Volver a seleccionar provincia")
+
+        opcion_menu = input("Opción seleccionada: ")
+
+        if opcion_menu == "1":
             clear_console()
-            print("Seleccione una acción:")
-            print("1. Construir edificio")
-            print("2. Continuar")
-            print("3. Buildings")
-            opcion_seleccionada = input("Opción seleccionada: ")
-            try:
-                opcion_seleccionada = int(opcion_seleccionada)
-                if opcion_seleccionada < 1 or opcion_seleccionada > 2:
-                    raise ValueError()
-            except ValueError:
-                print("Opción inválida.")
-                input("Presione Enter para continuar...")
-                continue
-            
-            if opcion_seleccionada == 1:
-                mostrar_opciones_edificios()
-                opcion_edificio = input("Opción seleccionada: ")
-                try:
-                    opcion_edificio = int(opcion_edificio)
-                    if opcion_edificio < 1 or opcion_edificio > 3:
-                        raise ValueError()
-                except ValueError:
-                    print("Opción inválida.")
-                    input("Presione Enter para continuar...")
-                    continue
-                
-                if opcion_edificio == 1:
-                    edificio = Edificio("Base del Ejército")
-                    provincia_seleccionada.buildings.append(edificio)
-                    print("Base del Ejército construida en", provincia_seleccionada.name)
-                    
-                elif opcion_edificio == 2:
-                    edificio = Edificio("Oficinas")
-                    provincia_seleccionada.buildings.append(edificio)
-                    print("Oficinas construidas en", provincia_seleccionada.name)
-                    
-                elif opcion_edificio == 3:
-                    edificio = Edificio("Base Naval")
-                    provincia_seleccionada.buildings.append(edificio)
-                    print("Base Naval construida en", provincia_seleccionada.name)
-                    
-                input("Presione Enter para continuar...")
-            elif opcion_seleccionada == 3:
-                print("Buildings")
-                building_selected = input("Seleccione un edificio para construir: ")
-                try:
-                    building_selected = int(building_selected)
-                    if building_selected < 1 or building_selected > 3:
-                        raise ValueError()
-                except ValueError:
-                    print("Opción inválida.")
-                    input("Presione Enter para continuar...")
-                    continue
-                    
-                if building_selected == 1:
-                    new_building = Edificio("Army")
-                    provincia_seleccionada.buildings.append(new_building)
-                elif building_selected == 2:
-                    new_building = Edificio("Office")
-                    provincia_seleccionada.buildings.append(new_building)
-                elif building_selected == 3:
-                    new_building = Edificio("Naval")
-                    provincia_seleccionada.buildings.append(new_building)
-                    
-                print(f"Se ha construido un edificio {new_building.nombre} en la provincia {provincia_seleccionada.name}")
-                input("Presione Enter para continuar...")
-
-
-
-menu_principal()
+            nombre_edificio = input("Ingrese el nombre del edificio: ")
+            # Aquí iría el código para crear el objeto Edificio
+            input("Presione enter para continuar...")
+        elif opcion_menu == "2":
+            clear_console()
+            nombre_ejercito = input("Ingrese el nombre del ejército: ")
+            size_ejercito = input("Ingrese el tamaño del ejército: ")
+            # Aquí iría el código para crear el objeto Army
+            input("Presione enter para continuar...")
+        elif opcion_menu == "3":
+            clear_console()
+            print(f"Ejércitos en la provincia {provincia_seleccionada.name}:")
+            for army in provincia_seleccionada.army:
+                print(f"{army.name} ({army.size} unidades)")
+            input("Presione enter para continuar...")
+        elif opcion_menu == "4":
+            break
+        else:
+            print("Opción inválida. Por favor, seleccione una opción válida.")
+            input("Presione enter para continuar...")
